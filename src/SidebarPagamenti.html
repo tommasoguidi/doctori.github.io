@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+      :root {
+        --bg-main: #FEEFFC;
+        --button-bg: #FFA6AF;
+        --accent-fuchsia: #FD7094;
+        --text-dark: #000000;
+        --text-light: #555555;
+        --card-bg: #FFFFFF;
+      }
+      
+      html, body { height: 100%; margin: 0; }
+      body { 
+        font-family: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-dark);
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+      }
+      
+      .container {
+        max-width: 400px;
+        width: 90%;
+        margin: 0 auto;
+        padding: 15px 0;
+        flex: 1 1 auto;
+      }
+      
+      #status-pagamento, #status-aggiustamento { 
+        margin-top: 15px; 
+        font-weight: bold; 
+      }
+      
+      .card-style {
+        margin-bottom: 20px;
+        padding: 25px 20px;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        color: var(--text-dark);
+        /* Neuromorphic style */
+        --color: var(--bg-main);
+        --radius: 20px;
+        --elevation: 8px; 
+        --bevel: 0.5px;
+        --angle: 225deg;
+        --intensity: 56;
+        --diffusion: 54;
+        --sin: calc(sin(var(--angle)));
+        --cos: calc(cos(var(--angle)));
+        --x-displacement: calc(-1 * var(--cos) * (var(--elevation) + 1px));
+        --y-displacement: calc(-1 * var(--sin) * (var(--elevation) + 1px));
+        --edge-opacity: calc(var(--intensity) * 0.006 - var(--diffusion) * 0.002);
+        --edge-blur: calc(var(--bevel) * 1.5);
+        --surface-contrast: calc(var(--intensity) * 0.01 - var(--diffusion) * 0.005);
+        box-shadow: var(--x-displacement) var(--y-displacement) calc(var(--diffusion) * 0.3px + (var(--elevation))) calc(var(--elevation) / 2) rgba(0, 0, 0, calc(var(--intensity) * 0.006)),
+                    0px 0px calc(var(--diffusion) * 1.4px) rgba(255, 255, 255, calc(var(--intensity) * 0.004)),
+                    inset calc(var(--bevel) * -1) 0 var(--edge-blur) hsla(100, 0%, calc((var(--cos) + 1) * 50%), var(--edge-opacity)),
+                    inset 0 var(--bevel) var(--edge-blur) hsla(100, 0%, calc((-1 * var(--sin) + 1) * 50%), var(--edge-opacity)),
+                    inset var(--bevel) 0 var(--edge-blur) hsla(100, 0%, calc((-1 * var(--cos) + 1) * 50%), var(--edge-opacity)),
+                    inset 0 calc(var(--bevel) * -1) var(--edge-blur) hsla(100, 0%, calc((var(--sin) + 1) * 50%), var(--edge-opacity));
+        background: linear-gradient(
+          calc(var(--angle) + 90deg),
+          rgba(0, 0, 0, var(--surface-contrast)),
+          rgba(255, 255, 255, var(--surface-contrast))
+          ),
+          var(--color);
+        background-blend-mode: soft-light;
+      }
+      
+      .card-style h5 { 
+        margin-bottom: 10px; 
+        font-weight: 600;
+      }
+      
+      .form-control {
+        background-color: var(--bg-main); /* Stesso colore dello sfondo */
+        border: 1px solid var(--accent-fuchsia);
+        border-radius: 10px;
+        padding: 10px 15px;
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-dark);
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .form-control:focus {
+        background-color: var(--bg-main);
+        color: var(--text-dark);
+        border-color: var(--accent-fuchsia);
+        box-shadow: 0 0 0 3px rgba(253, 112, 148, 0.25);
+      }
+      /* select.form-control {
+        padding: 8px 12px;
+        line-height: 1.2;
+        appearance: none;
+        -webkit-appearance: none;
+        background-position: right 10px center;
+        background-repeat: no-repeat;
+        background-size: 16px;
+      } */
+      select.form-control {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%23FD7094' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M1 1l5 5 5-5'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 12px;
+        padding-right: 40px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        line-height: 1.2;
+      }
+      
+      input[type=number]::-webkit-inner-spin-button, 
+      input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+      }
+      input[type=number] {
+        -moz-appearance: textfield;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
+      .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px 25px;
+        margin: 10px 0;
+        background-color: var(--button-bg);
+        color: var(--text-dark);
+        text-decoration: none;
+        border-radius: 15px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 0 0 2px var(--accent-fuchsia) inset,
+                    0 4px 12px rgba(0,0,0,0.08);
+        border: none;
+        width: 100%;
+      }
+      .button:hover { 
+        color: var(--card-bg);
+        text-decoration: none;
+        transform: translateY(-2px);
+        background-color: var(--accent-fuchsia);
+        box-shadow: 0 0 0 2px var(--accent-fuchsia) inset,
+                    0 6px 18px rgba(0,0,0,0.12);
+      }
+      
+      .row { margin-left: -5px; margin-right: -5px; }
+      .row > [class*="col-"] { padding-left: 5px; padding-right: 5px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      
+      <!-- Card per Nuovo Pagamento -->
+      <div id="nuovo-pagamento-section" class="card-style">
+        <h5>Aggiungi Pagamento</h5>
+        <form id="nuovo-pagamento-form">
+          <div class="form-group">
+            <input type="text" class="form-control" id="pagamento-data" placeholder="data" required>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" id="pagamento-oggetto" placeholder="causale" required>
+          </div>
+          <div class="form-group mb-0">
+            <input type="number" step="0.01" class="form-control" id="pagamento-importo" placeholder="importo" required>
+          </div>
+          <button type="submit" id="salva-pagamento-btn" class="button mt-3">
+            salva pagamento
+          </button>
+        </form>
+        <div id="status-pagamento"></div>
+      </div>
+      
+      <!-- Card per Aggiustamenti -->
+      <div id="aggiustamenti-section" class="card-style">
+        <h5>Aggiustamenti Partite</h5>
+        <form id="aggiustamento-form"> 
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group mb-0">
+                <select id="match-select" class="form-control" required>
+                  <option value="">match ID</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group mb-0">
+                <input type="number" step="0.01" class="form-control" id="aggiustamento-importo" placeholder="importo" required>
+              </div>
+            </div>
+          </div>
+          <!-- NUOVO BOTTONE SALVA PER AGGIUSTAMENTI -->
+          <button type="submit" id="salva-aggiustamento-btn" class="button mt-3">
+            salva aggiustamento
+          </button>
+        </form>
+        <div id="status-aggiustamento"></div>
+      </div>
+      
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      // 1. All'avvio, popola il menu a tendina
+      document.addEventListener("DOMContentLoaded", function() {
+        populateMatchSelect();
+
+        const dateInput = document.getElementById('pagamento-data');
+        dateInput.addEventListener('focus', function() {
+          this.type = 'date';
+          try {
+            this.showPicker();
+          } catch (e) {
+          }
+        });
+        dateInput.addEventListener('blur', function() {
+          if (!this.value) {
+            this.type = 'text';
+          }
+        });
+        
+        // Listener per il form di pagamento
+        document.getElementById("nuovo-pagamento-form").addEventListener("submit", function(event) {
+          event.preventDefault();
+          salvaNuovoPagamento();
+        });
+        
+        // Listener per il form di aggiustamento
+        document.getElementById("aggiustamento-form").addEventListener("submit", function(event) {
+          event.preventDefault();
+          salvaAggiustamento();
+        });
+      });
+
+      // 2. Popola il menu a tendina
+      function populateMatchSelect() {
+        const select = document.getElementById('match-select');
+        const partite = [];
+        for (let i = 1; i <= 11; i++) partite.push(`${i}A`);
+        for (let i = 1; i <= 11; i++) partite.push(`${i}R`);
+        
+        partite.forEach(p => {
+          select.innerHTML += `<option value="${p}">${p}</option>`;
+        });
+      }
+      
+      // --- LOGICA PER NUOVO PAGAMENTO ---
+
+      // 3. Salva il nuovo pagamento
+      function salvaNuovoPagamento() {
+        const btn = document.getElementById('salva-pagamento-btn');
+        const status = document.getElementById('status-pagamento');
+        status.innerHTML = '';
+        
+        const dataInput = document.getElementById('pagamento-data');
+        const oggettoInput = document.getElementById('pagamento-oggetto');
+        const importoInput = document.getElementById('pagamento-importo');
+        
+        const data = dataInput.value;
+        const oggetto = oggettoInput.value;
+        const importo = parseFloat(importoInput.value);
+
+        if (!data || !oggetto || isNaN(importo)) {
+          status.innerHTML = `<div class="alert alert-danger">Compila tutti i campi correttamente.</div>`;
+          return;
+        }
+
+        const pagamentoData = {
+          data: new Date(data).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+          oggetto: oggetto,
+          importo: importo
+        };
+        
+        btn.disabled = true;
+        status.innerHTML = `<div class="alert alert-info">Salvataggio pagamento...</div>`;
+        
+        google.script.run.withSuccessHandler(onSalvaPagamentoComplete).aggiungiNuovoPagamento(pagamentoData);
+      }
+
+      // 4. Gestisce la risposta del salvataggio pagamento
+      function onSalvaPagamentoComplete(response) {
+        const btn = document.getElementById('salva-pagamento-btn');
+        const status = document.getElementById('status-pagamento');
+        
+        if (response.success) {
+          status.innerHTML = `<div class="alert alert-success">${response.message}</div>`;
+          document.getElementById('nuovo-pagamento-form').reset();
+        } else {
+          status.innerHTML = `<div class="alert alert-danger">Errore: ${response.message}</div>`;
+        }
+        btn.disabled = false;
+      }
+      
+      // --- LOGICA PER AGGIUSTAMENTO ---
+
+      // 5. Salva il nuovo aggiustamento
+      function salvaAggiustamento() {
+        const btn = document.getElementById('salva-aggiustamento-btn');
+        const status = document.getElementById('status-aggiustamento');
+        status.innerHTML = '';
+
+        const matchId = document.getElementById('match-select').value;
+        const importoValue = document.getElementById('aggiustamento-importo').value;
+        const importo = parseFloat(importoValue);
+        
+        if (!matchId || isNaN(importo)) {
+           status.innerHTML = `<div class="alert alert-danger">Compila tutti i campi correttamente.</div>`;
+           return;
+        }
+        
+        btn.disabled = true;
+        status.innerHTML = `<div class="alert alert-info">Salvataggio aggiustamento...</div>`;
+        
+        google.script.run.withSuccessHandler(onSalvaAggiustamentoComplete).salvaAggiustamento(matchId, importo);
+      }
+      
+      // 6. Gestisce la risposta del salvataggio aggiustamento
+      function onSalvaAggiustamentoComplete(response) {
+        const btn = document.getElementById('salva-aggiustamento-btn');
+        const status = document.getElementById('status-aggiustamento');
+        
+        if (response.success) {
+          status.innerHTML = `<div class="alert alert-success">${response.message}</div>`;
+          document.getElementById('aggiustamento-form').reset();
+        } else {
+          status.innerHTML = `<div class="alert alert-danger">Errore: ${response.message}</div>`;
+        }
+        btn.disabled = false;
+      }
+      
+    </script>
+  </body>
+</html>

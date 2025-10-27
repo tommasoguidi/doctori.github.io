@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+      /* --- Palette Doctori --- */
+      :root {
+        --bg-main: #FEEFFC; /* Sfondo principale: bianco sporco/rosato */
+        --button-bg: #FFA6AF; /* Rosa intermedio per i bottoni */
+        --accent-fuchsia: #FD7094; /* Fucsia intenso per dettagli/bordi/hover */
+        --text-dark: #000000; /* Nero per il testo principale */
+        --text-light: #555555; /* Grigio più chiaro per sottotitoli o testo secondario */
+        --card-bg: #FFFFFF; /* Bianco puro per eventuali card interne (se ripristinate) */
+      }
+      
+      body { 
+        font-family: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+        margin: 0; 
+        background-color: var(--bg-main);
+        color: var(--text-dark);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        min-height: 100vh;
+        padding-bottom: 25px;
+        /* box-sizing: border-box; */
+      }
+      
+      .container { 
+        max-width: 400px;
+        width: 90%;
+        margin: 0 auto;
+        padding: 0 0 20px 0;
+        background-color: transparent;
+        border-radius: 20px;
+        /* flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        overflow: hidden; */
+      }
+      
+      .logo-section {
+        text-align: center;
+        /* margin-bottom: 20px; */
+      }
+      .logo-image-wrapper {
+        position: relative;
+        width: 100%; /* Occupa tutta la larghezza disponibile */
+        height: auto;
+        overflow: hidden;
+      }
+      .logo-image {
+        max-width: 250px;
+        height: auto;
+        display: block;
+        margin: 0 auto -10px auto;
+        mask-image: linear-gradient(to bottom, black 50%, transparent 90%);
+        /* -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 90%); */
+      }
+
+      .main-title {
+        font-size: 3.2rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-top: -30px;
+        margin-bottom: 5px;
+        line-height: 1;
+      }
+      .subtitle {
+        font-size: 1rem;
+        color: var(--text-light);
+        margin: 0;
+      }
+      
+      .saldo-card {
+        color: var(--text-dark);
+        padding: 25px 20px;
+        /* margin-top: 30px; */
+        margin-bottom: 20px;
+        border-radius: 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+
+        --color: var(--bg-main);
+        --radius: 20px;
+        --elevation: 8px; 
+        --bevel: 0.5px;
+        --angle: 225deg;
+        --intensity: 56;
+        --diffusion: 54;
+
+        --sin: calc(sin(var(--angle)));
+        --cos: calc(cos(var(--angle)));
+        --x-displacement: calc(-1 * var(--cos) * (var(--elevation) + 1px));
+        --y-displacement: calc(-1 * var(--sin) * (var(--elevation) + 1px));
+        --edge-opacity: calc(var(--intensity) * 0.006 - var(--diffusion) * 0.002);
+        --edge-blur: calc(var(--bevel) * 1.5);
+        --surface-contrast: calc(var(--intensity) * 0.01 - var(--diffusion) * 0.005);
+        
+        box-shadow: var(--x-displacement) var(--y-displacement) calc(var(--diffusion) * 0.3px + (var(--elevation))) calc(var(--elevation) / 2) rgba(0, 0, 0, calc(var(--intensity) * 0.006)),
+                    0px 0px calc(var(--diffusion) * 1.4px) rgba(255, 255, 255, calc(var(--intensity) * 0.004)),
+                    inset calc(var(--bevel) * -1) 0 var(--edge-blur) hsla(100, 0%, calc((var(--cos) + 1) * 50%), var(--edge-opacity)),
+                    inset 0 var(--bevel) var(--edge-blur) hsla(100, 0%, calc((-1 * var(--sin) + 1) * 50%), var(--edge-opacity)),
+                    inset var(--bevel) 0 var(--edge-blur) hsla(100, 0%, calc((-1 * var(--cos) + 1) * 50%), var(--edge-opacity)),
+                    inset 0 calc(var(--bevel) * -1) var(--edge-blur) hsla(100, 0%, calc((var(--sin) + 1) * 50%), var(--edge-opacity));
+        background: linear-gradient(
+          calc(var(--angle) + 90deg),
+          rgba(0, 0, 0, var(--surface-contrast)),
+          rgba(255, 255, 255, var(--surface-contrast))
+          ),
+          var(--color);
+        background-blend-mode: soft-light;
+      }
+      .saldo-card h4 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 2.8rem;
+        line-height: 1.2;
+      }
+      .saldo-card p {
+        margin: 0;
+        opacity: 0.8;
+        font-size: 1rem;
+        margin-top: 5px;
+      }
+      
+      .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px 25px;
+        margin: 10px 0;
+        background-color: var(--button-bg);
+        color: var(--text-dark);
+        text-decoration: none;
+        border-radius: 15px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+
+        box-shadow: 0 0 0 2px var(--accent-fuchsia) inset,
+                    0 4px 12px rgba(0,0,0,0.08);
+      }
+      .button i {
+        margin-right: 10px;
+        color: var(--text-dark);
+        font-size: 1.3em;
+      }
+      .button .icon-right {
+        margin-left: 10px;
+        margin-right: 0;
+      }
+
+      .button:hover { 
+        color: var(--card-bg);
+        text-decoration: none;
+        transform: translateY(-2px);
+        background-color: var(--accent-fuchsia);
+        box-shadow: 0 0 0 2px var(--accent-fuchsia) inset,
+                    0 6px 18px rgba(0,0,0,0.12);
+      }
+       .button:hover i {
+        color: var(--card-bg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      
+      <div class="logo-section">
+        <div class="logo-image-wrapper">
+          <img src="https://masaccio.sirv.com/logo_doctori_scontornato.png" alt="Doctori FC Logo" class="logo-image">
+        </div>
+        <h2 class="main-title">DOCTORI FC</h2>
+      </div>
+
+      <div class="saldo-card">
+        <p>Saldo Attuale</p>
+        <h4 id="saldo-value">...</h4>
+      </div>
+
+      <? var url = ScriptApp.getService().getUrl(); ?>
+      <a href="<?= url ?>?page=nuovo_tesserato" class="button">aggiungi tesserato</a>
+      <a href="<?= url ?>?page=gestisci_pagamenti" class="button">aggiungi pagamento</a>
+      <a href="<?= url ?>?page=gestisci_debiti" class="button">chiodi</a>
+      <a href="<?= url ?>?page=distinta" class="button">genera distinta</a>
+    </div>
+
+    <script>
+      // 1. All'avvio, chiama la funzione per ottenere il saldo
+      document.addEventListener("DOMContentLoaded", function() {
+        
+        // --- Caricamento Attivo per il Saldo ---
+        // Questo lo vogliamo mostrare, quindi usiamo withSuccessHandler
+        document.getElementById('saldo-value').innerText = '...';
+        google.script.run.withSuccessHandler(onSaldoLoaded).getSaldoTotale();
+
+        // --- PRE-WARM CACHE (NUOVO) ---
+        // Eseguiamo queste chiamate "fire and forget". Non ci interessa
+        // la risposta, ma solo che vengano eseguite sul server
+        // per popolare la cache. Questo renderà il caricamento
+        // delle altre pagine quasi istantaneo.
+        console.log("Pre-warming server cache...");
+        google.script.run.getSidebarDistintaData();
+        google.script.run.getDebitiData();
+        google.script.run.getTesseratiHeaders();
+        google.script.run.ottieniMessaggioPagamenti;
+      });
+
+      // 2. Popola il saldo quando arrivano i dati
+      function onSaldoLoaded(saldoData) {
+        const saldoEl = document.getElementById('saldo-value');
+        if (typeof saldoData.saldo === 'number') {
+          saldoEl.innerText = saldoData.saldo.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' });
+        } else {
+          saldoEl.innerText = saldoData.saldo; // Mostra 'N/D' o 'Errore'
+        }
+      }
+    </script>
+    
+    </body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+      :root {
+        --bg-main: #FEEFFC;
+        --button-bg: #FFA6AF;
+        --accent-fuchsia: #FD7094;
+        --text-dark: #000000;
+        --text-light: #555555;
+        --card-bg: #FFFFFF;
+      }
+      
+      html, body { height: 100%; margin: 0; }
+      body { 
+        font-family: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-dark);
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+      }
+      
+      .container {
+        max-width: 400px;
+        width: 90%;
+        margin: 0 auto;
+        padding: 15px 0;
+        flex: 1 1 auto;
+      }
+      
+      #status { 
+        margin-top: 15px; 
+        font-weight: bold; 
+      }
+      
+      .card-style {
+        margin-bottom: 20px;
+        padding: 25px 20px;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        color: var(--text-dark);
+        /* Neuromorphic style */
+        --color: var(--bg-main);
+        --radius: 20px;
+        --elevation: 8px; 
+        --bevel: 0.5px;
+        --angle: 225deg;
+        --intensity: 56;
+        --diffusion: 54;
+        --sin: calc(sin(var(--angle)));
+        --cos: calc(cos(var(--angle)));
+        --x-displacement: calc(-1 * var(--cos) * (var(--elevation) + 1px));
+        --y-displacement: calc(-1 * var(--sin) * (var(--elevation) + 1px));
+        --edge-opacity: calc(var(--intensity) * 0.006 - var(--diffusion) * 0.002);
+        --edge-blur: calc(var(--bevel) * 1.5);
+        --surface-contrast: calc(var(--intensity) * 0.01 - var(--diffusion) * 0.005);
+        box-shadow: var(--x-displacement) var(--y-displacement) calc(var(--diffusion) * 0.3px + (var(--elevation))) calc(var(--elevation) / 2) rgba(0, 0, 0, calc(var(--intensity) * 0.006)),
+                    0px 0px calc(var(--diffusion) * 1.4px) rgba(255, 255, 255, calc(var(--intensity) * 0.004)),
+                    inset calc(var(--bevel) * -1) 0 var(--edge-blur) hsla(100, 0%, calc((var(--cos) + 1) * 50%), var(--edge-opacity)),
+                    inset 0 var(--bevel) var(--edge-blur) hsla(100, 0%, calc((-1 * var(--sin) + 1) * 50%), var(--edge-opacity)),
+                    inset var(--bevel) 0 var(--edge-blur) hsla(100, 0%, calc((-1 * var(--cos) + 1) * 50%), var(--edge-opacity)),
+                    inset 0 calc(var(--bevel) * -1) var(--edge-blur) hsla(100, 0%, calc((var(--sin) + 1) * 50%), var(--edge-opacity));
+        background: linear-gradient(
+          calc(var(--angle) + 90deg),
+          rgba(0, 0, 0, var(--surface-contrast)),
+          rgba(255, 255, 255, var(--surface-contrast))
+          ),
+          var(--color);
+        background-blend-mode: soft-light;
+      }
+      
+      .card-style h5 { 
+        margin-bottom: 10px; 
+        font-weight: 600;
+      }
+      
+      .form-control {
+        background-color: var(--bg-main);
+        border: 1px solid var(--accent-fuchsia);
+        border-radius: 10px;
+        padding: 10px 15px;
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-dark);
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .form-control:focus {
+        background-color: var(--bg-main);
+        color: var(--text-dark);
+        border-color: var(--accent-fuchsia);
+        box-shadow: 0 0 0 3px rgba(253, 112, 148, 0.25);
+      }
+      .form-control::placeholder {
+        color: var(--text-light);
+        opacity: 1;
+      }
+      .form-group { /* Added from Pagamenti for consistency */
+         margin-bottom: 15px; 
+      }
+      /* select.form-control {
+        padding: 8px 12px;
+        line-height: 1.2;
+        appearance: none;
+        -webkit-appearance: none;
+        background-position: right 10px center;
+        background-repeat: no-repeat;
+        background-size: 16px;
+      } */
+      select.form-control {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%23FD7094' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M1 1l5 5 5-5'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 12px;
+        padding-right: 40px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        line-height: 1.2;
+      }
+
+      .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px 25px;
+        margin: 10px 0;
+        background-color: var(--button-bg);
+        color: var(--text-dark);
+        text-decoration: none;
+        border-radius: 15px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 0 0 2px var(--accent-fuchsia) inset,
+                    0 4px 12px rgba(0,0,0,0.08);
+        border: none;
+        width: 100%;
+      }
+      .button i {
+        margin-right: 10px;
+        color: var(--text-dark);
+        font-size: 1.2em;
+      }
+      .button:hover { 
+        color: var(--card-bg);
+        text-decoration: none;
+        transform: translateY(-2px);
+        background-color: var(--accent-fuchsia);
+        box-shadow: 0 0 0 2px var(--accent-fuchsia) inset,
+                    0 6px 18px rgba(0,0,0,0.12);
+      }
+       .button:hover i {
+        color: var(--card-bg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="loader">
+        <p>Caricamento form...</p>
+      </div>
+
+      <div id="main-content" class="card-style" style="display: none;">
+        <!-- <h5>Nuovo Tesserato</h5> -->
+        <form id="tesserato-form">
+          <div id="form-fields"></div>
+          
+          <button type="submit" id="submit-btn" class="button mt-3">
+            aggiungi tesserato
+          </button>
+        </form>
+        
+        <div id="status"></div>
+      </div>
+    </div>
+
+    <script>
+      // 1. All'avvio, chiama la funzione per ottenere gli header
+      document.addEventListener("DOMContentLoaded", function() {
+        google.script.run.withSuccessHandler(onHeadersLoaded).getTesseratiHeaders();
+      });
+
+      // Crea un elemento <select>
+      function createSelectElement(name, options) {
+        const select = document.createElement("select");
+        select.className = "form-control";
+        select.id = name;
+        select.name = name;
+        
+        options.forEach(optionValue => {
+          const option = document.createElement("option");
+          option.value = optionValue;
+          option.text = optionValue;
+          select.appendChild(option);
+        });
+        return select;
+      }
+
+      // 2. Costruisce il form dinamicamente
+      function onHeadersLoaded(headers) {
+        if (headers.error) {
+          document.getElementById('loader').innerHTML = `<p class="text-danger">Errore: ${headers.error}</p>`;
+          return;
+        }
+
+        const formFields = document.getElementById("form-fields");
+        const fieldsToSkip = ['N_MAGLIA', 'SCAD_CERT_MEDICO', 'DATA_EMISSIONE', 'N_TESSERA'];
+        
+        headers.forEach(header => {
+          if (fieldsToSkip.includes(header)) {
+            return; // Skips this loop iteration, field is not created
+          }
+
+          const placeholderText = header.replace(/_/g, ' ').toLowerCase();
+          const div = document.createElement("div");
+          div.className = "form-group";
+          
+          if (header === "TIPO_TESSERA") {
+            const select = createSelectElement(header, ["A", "D"]);
+            select.value = "A"; // Default
+            div.appendChild(select);
+          } else if (header === "DOCUMENTO") {
+            const select = createSelectElement(header, ["C.I.", "PAT."]);
+            select.value = "C.I."; // Default
+            div.appendChild(select);
+          } else if (header === "COMMITMENT") {
+            const select = createSelectElement(header, ["0", "1", "2"]);
+            select.value = "2"; // Default
+            div.appendChild(select);
+          } else {
+            // Logica <input> originale
+            const input = document.createElement("input");
+            input.type = "text";
+            input.className = "form-control";
+            input.id = header;
+            input.name = header;
+            input.placeholder = placeholderText;
+            
+            if (header === "DATA_DI_NASCITA") {              
+              // 2. Add listeners to swap type
+              input.addEventListener('focus', function() {
+                this.type = 'date';
+                try {
+                  this.showPicker();
+                } catch (e) {
+                }
+              });
+              input.addEventListener('blur', function() {
+                if (!this.value) {
+                  this.type = 'text'; // 3. Revert if empty
+                }
+              });
+            }
+            
+            // Aggiungi gli altri valori di default
+            if (header === "SESSO") {
+              input.value = "M";
+            } else if (header === "TIPO_CERT") {
+              input.value = "AGONISTICO";
+            }
+            
+            div.appendChild(input);
+          }
+
+          formFields.appendChild(div);
+        });
+
+        // Mostra il contenuto
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+      }
+      
+      // 3. Gestisce l'invio del form
+      document.getElementById("submit-btn").addEventListener("click", function(event) {
+        const form = document.getElementById("tesserato-form");
+        event.preventDefault(); // Prevent default form submission
+        
+        const statusDiv = document.getElementById('status');
+        const btn = document.getElementById('submit-btn');
+        statusDiv.innerHTML = "🔄 Operazione in corso...";
+        btn.disabled = true;
+
+        // Raccoglie i dati dal form in un oggetto
+        const formData = {};
+        const inputs = form.elements;
+        
+        for (let i = 0; i < inputs.length; i++) {
+          const input = inputs[i];
+          if (input.name) {
+            if (input.type === "date" && input.value) {
+              const date = new Date(input.value);
+              formData[input.name] = date.toLocaleDateString('it-IT');
+            } else if (input.name.toUpperCase().includes('EMAIL')) {
+              formData[input.name] = input.value;
+            } else {
+              formData[input.name] = input.value.toUpperCase();
+            }
+          }
+        }
+        
+        // Invia l'oggetto 'formData' alla funzione server
+        google.script.run.withSuccessHandler(onSubmitComplete).aggiungiNuovoTesserato(formData);
+      });
+
+      // Rimosso l'altro listener 'submit', era ridondante
+      
+      // 4. Gestisce la risposta del server
+      function onSubmitComplete(response) {
+        const statusDiv = document.getElementById('status');
+        if (response.success) {
+          statusDiv.innerHTML = `<div class="alert alert-success">✅ ${response.message}</div>`;
+          document.getElementById("tesserato-form").reset(); // Pulisce il form
+          document.getElementById("TIPO_TESSERA").value = "A";
+          document.getElementById("DOCUMENTO").value = "C.I.";
+          document.getElementById("COMMITMENT").value = "2";
+          document.getElementById("SESSO").value = "M";
+          document.getElementById("TIPO_CERT").value = "AGONISTICO";
+        } else {
+          statusDiv.innerHTML = `<div class="alert alert-danger">❌ Errore: ${response.message}</div>`;
+        }
+        document.getElementById('submit-btn').disabled = false;
+      }
+    </script>
+  </body>
+</html>

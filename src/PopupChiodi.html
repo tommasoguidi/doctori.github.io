@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      :root {
+        --rosa-doctori: #FEEFF2;
+        --testo-doctori: #1A1A1A;
+        --bianco-doctori: #FFFFFF;
+        --blu-doctori: #4285F4;
+      }
+      body { 
+        font-family: 'Helvetica', Arial, sans-serif; 
+        margin: 20px;
+        background-color: var(--rosa-doctori);
+        color: var(--testo-doctori);
+      }
+      #message-container { 
+        width: 100%; 
+        box-sizing: border-box; 
+        white-space: pre-wrap;
+        margin-bottom: 12px; 
+        padding: 20px;
+        font-size: 14px;
+        word-wrap: break-word;
+        background-color: var(--bianco-doctori);
+        border: 1px solid #eee;
+        border-radius: 12px;
+        min-height: 200px;
+      }
+      button { 
+        padding: 12px 15px; 
+        cursor: pointer; 
+        background-color: var(--blu-doctori);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        display: block;
+        width: 100%;
+      }
+      button:hover {
+        opacity: 0.9;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div id="message-container" contenteditable="true"><?= message ?></div>
+    <button onclick="copyMessage()">📋 Copia Messaggio</button>
+
+    <script>
+      function copyMessage() {
+        const messageContainer = document.getElementById('message-container');
+        const textToCopy = messageContainer.innerText;
+        navigator.clipboard.writeText(textToCopy).then(function() {
+          alert('Messaggio copiato!');
+          // google.script.host.close();
+        }, function(err) {
+          alert('Errore: Impossibile copiare il messaggio.');
+        });
+      }
+    </script>
+  </body>
+</html>
