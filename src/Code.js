@@ -17,11 +17,13 @@ function doGet(e) {
   // (es. .../exec?page=distinta)
   const page = e.parameter.page;
 
+  let htmlOutput;
+
   if (page === 'distinta') {
     // Mostra la pagina per generare la distinta
-    return HtmlService.createHtmlOutputFromFile('SidebarDistinta')
-        .setTitle('🚀 Genera Distinta')
-        .addMetaTag('viewport', 'width=device-width, initial-scale=1'); // Ottimizza per mobile
+    htmlOutput = HtmlService.createHtmlOutputFromFile('SidebarDistinta')
+    .setTitle('🚀 Genera Distinta')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1'); // Ottimizza per mobile
 
   } else if (page === 'pagamenti') {
     // Genera il messaggio e mostralo nel popup
@@ -33,7 +35,7 @@ function doGet(e) {
     const lineCount = messaggio.split('\n').length;
     const dialogHeight = 125 + (lineCount * 18);
 
-    return htmlTemplate.evaluate()
+    htmlOutput = htmlTemplate.evaluate()
         .setTitle('📉 Genera Messaggio Pagamenti')
         .setWidth(450) // Nota: questo verrà ignorato su mobile, è ok
         .setHeight(dialogHeight)
@@ -41,18 +43,18 @@ function doGet(e) {
   
   } else if (page == 'nuovo_tesserato') {
     // Mostra la pagina per aggiungere un tesserato
-    return HtmlService.createHtmlOutputFromFile('SidebarNuovoTesserato')
+    htmlOutput = HtmlService.createHtmlOutputFromFile('SidebarNuovoTesserato')
         .setTitle('➕ Aggiungi Tesserato')
         .addMetaTag('viewport', 'width=device-width, initial-scale=1');
   
   } else if (page === 'gestisci_pagamenti') {
     // Mostra la pagina per gestire i pagamenti
-    return HtmlService.createHtmlOutputFromFile('SidebarPagamenti')
+    htmlOutput = HtmlService.createHtmlOutputFromFile('SidebarPagamenti')
         .setTitle('💰 Aggiungi Pagamento')
         .addMetaTag('viewport', 'width=device-width, initial-scale=1');
   
   } else if (page === 'gestisci_debiti') {
-    return HtmlService.createHtmlOutputFromFile('SidebarDebiti')
+    htmlOutput = HtmlService.createHtmlOutputFromFile('SidebarDebiti')
         .setTitle('💰 Vedi Debiti')
         .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 
@@ -65,10 +67,11 @@ function doGet(e) {
     htmlTemplate.saldo = saldoData.saldo;
     htmlTemplate.saldoCell = saldoData.cell;
 
-    return htmlTemplate.evaluate()
+    htmlOutput = htmlTemplate.evaluate()
         .setTitle('🤖 Automazioni')
         .addMetaTag('viewport', 'width=device-width, initial-scale=1'); // Ottimizza per mobile
   }
+  return htmlOutput;
 }
 
 /**
